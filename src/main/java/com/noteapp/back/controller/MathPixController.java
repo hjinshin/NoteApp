@@ -5,7 +5,7 @@ import com.noteapp.back.service.ImageGenerator;
 import com.noteapp.back.service.MathPixService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
@@ -19,8 +19,8 @@ public class MathPixController {
     private MathPixService mathPixService;
 
     @PostMapping("/api/mathpix")
-    public String recognizeMathExpression(@RequestParam ImgDto imgDto) throws URISyntaxException {
-        System.out.println(imgDto);
+    public String recognizeMathExpression(@RequestBody ImgDto imgDto) throws URISyntaxException {
+        System.out.println(imgDto.getImg());
 
         return mathPixService.recognizeMathExpression(imgDto.getImg());
     }
