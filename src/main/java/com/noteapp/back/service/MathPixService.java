@@ -22,7 +22,7 @@ public class MathPixService {
     @Value("${mathpix_api_url}")
     private String api_url;
 
-    public String recognizeMathExpression(byte[] imageBytes) throws URISyntaxException {
+    public String recognizeMathExpression(String imgByte) throws URISyntaxException {
         RestTemplate restTemplate = new RestTemplate();
 
         HttpHeaders headers = new HttpHeaders();
@@ -31,7 +31,7 @@ public class MathPixService {
         headers.set("app_key", app_key);
 
         Map<String, Object> requestBody = new HashMap<>();
-        requestBody.put("src", "data:image/jpeg;base64," + java.util.Base64.getEncoder().encodeToString(imageBytes));
+        requestBody.put("src", "data:image/jpeg;base64," + imgByte);
 
         RequestEntity<Map<String, Object>> requestEntity = RequestEntity
                 .post(new URI(api_url))
