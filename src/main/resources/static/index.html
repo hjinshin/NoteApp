@@ -1,21 +1,127 @@
-
 <!DOCTYPE html>
-<html>
+<html lang="ko">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <script src="./desmos.js"></script>
+    <style>
+        html, body {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
 
-
-
+        #calculator {
+            width: 100%;
+            height: 100%;
+        }
+    </style>
 </head>
 <body>
-<div id="calculator" style="width: 100%; max-width: 600px; height: 500px;"></div>
-
+<div style="margin-top: 10px; width: 100%; overflow: hidden;">
+    <div style="width: 75%; float: left;">
+        <img id="image" style="display: none; margin: 0 auto; border: 1px solid #ddd;" alt="graph-image" src=''/>
+    </div>
+</div>
+<div id="calc-result" style="display: none; width: 1000px; margin: 100px auto; text-align: center; font-size: 50px; border: 1px solid #ddd;"></div>
+<button id="calcBtn" style="position: absolute; top: 100px; right: 100px; width:100px; height: 50px; z-index: 999">계산기</button>
+<button id="graphBtn" style="position: absolute; top: 160px; right: 100px; width:100px; height: 50px; z-index: 999">그래프</button>
 <script>
-    var elt = document.getElementById('calculator');
-    var calculator = Desmos.GraphingCalculator(elt);
-    calculator.setExpression({id:1, latex:"3+3"})
+    const elt = document.getElementById('calculator');
+    const img = document.getElementById('image');
+    const calc_result = document.getElementById('calc-result');
+    const calcBtn = document.getElementById('calcBtn');
+    const graphBtn = document.getElementById('graphBtn');
+
+    function waitForCondition(conditionFunction) {
+        return new Promise(async resolve => {
+            while (!conditionFunction()) {
+                await new Promise(innerResolve => setTimeout(innerResolve, 100));
+            }
+            resolve();
+        });
+    }
+
+
+    calcBtn.addEventListener('click', selectCalc);
+    graphBtn.addEventListener('click', selectGraph);
+
+    function selectCalc() {
+        // 계산기
+        calc_result.style.display = '';
+        img.style.display = 'none';
+        const calculator = Desmos.GraphingCalculator();
+        calculator.setExpression({id:1, latex:"\\sqrt{2}"});
+        calculator.updateSettings({
+            expressionsCollapsed: true
+        });
+
+        waitForCondition(() => calculator.expressionAnalysis[1] !== undefined).then(() => {
+            const result = calculator.expressionAnalysis[1];
+            if(result.isError) {
+                console.log("Error");
+            }
+
+            else {
+                console.log(result.evaluation.value);
+                calc_result.textContent = result.evaluation.value;
+            }
+
+        });
+    }
+
+    function selectGraph() {
+        // 그래프
+        calc_result.style.display = 'none';
+        img.style.display = 'block';
+        const calcOpts = {
+            lockViewport: true,
+            zoomButtons: false,
+            expressions: false,
+            settingsMenu: false
+        };
+        var opts = {
+            mode: 'contain',
+            width: 1000,
+            height: 1000
+        };
+        const calculator = Desmos.GraphingCalculator(elt, calcOpts);
+        calculator.setState({
+            "version":7,
+            "graph":{
+                "viewport":{
+                    "xmin":-50,
+                    "ymin":-50,
+                    "xmax":50,
+                    "ymax":50}},
+            "expressions":{
+                "list":[
+                    {"type":"expression","id":"1","color":"#c74440","latex":"\\left(10,2\\right)"},
+                    {"type":"expression","id":"2","color":"#2d70b3","latex":"\\left(-5,5\\right)"},
+                    {"type":"expression","id":"3","color":"#388c46","latex":"\\left(0,0\\right)"},
+                    {"type":"expression","id":"4","color":"#2d70b3","latex":"y=x^{2}\\left\\{0<x\\right\\}"}]}});
+
+        function takeScreenshot(opts) {
+            calculator.asyncScreenshot(opts, function(data) {
+                img.src = data;
+            });
+        }
+        takeScreenshot(opts);
+
+        waitForCondition(() => document.getElementById("image").src !== "").then(() => {
+            const result = document.getElementById("image").src;
+            console.log(result);
+        });
+
+
+    }
+
+
+
+
+
 
 </script>
 
