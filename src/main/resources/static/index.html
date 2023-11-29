@@ -22,7 +22,7 @@
 <body>
 <div style="margin-top: 10px; width: 100%; overflow: hidden;">
     <div style="width: 75%; float: left;">
-        <img id="image" style="display: none; margin: 0 auto; border: 1px solid #ddd;" alt="graph-image" src=''/>
+        <img id="image" style="display: none; margin: 0 auto; border: 1px solid #ddd;" alt="graph-image"/>
     </div>
 </div>
 <div id="calc-result" style="display: none; width: 1000px; margin: 100px auto; text-align: center; font-size: 50px; border: 1px solid #ddd;"></div>
@@ -110,7 +110,7 @@
         }
         takeScreenshot(opts);
 
-        waitForCondition(() => document.getElementById("image").src !== "").then(() => {
+        waitForCondition(() => document.getElementById("image").src !== '').then(() => {
             const result = document.getElementById("image").src;
             console.log(result);
         });
