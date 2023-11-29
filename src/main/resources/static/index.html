@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
+    <title>desmos api</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <script src="./desmos.js"></script>
@@ -22,7 +23,7 @@
 <body>
 <div style="margin-top: 10px; width: 100%; overflow: hidden;">
     <div style="width: 75%; float: left;">
-        <img id="image" style="display: none; margin: 0 auto; border: 1px solid #ddd;" alt="graph-image"/>
+        <img id="image" style="display: none; margin: 0 auto; border: 1px solid #ddd;" alt="graph-image" src=""/>
     </div>
 </div>
 <div id="calc-result" style="display: none; width: 1000px; margin: 100px auto; text-align: center; font-size: 50px; border: 1px solid #ddd;"></div>
@@ -65,7 +66,7 @@
             }
 
             else {
-                console.log(result.evaluation.value);
+                console.log(result.evaluation.value);       // calcalate 결과
                 calc_result.textContent = result.evaluation.value;
             }
 
@@ -106,16 +107,11 @@
         function takeScreenshot(opts) {
             calculator.asyncScreenshot(opts, function(data) {
                 img.src = data;
+                console.log(img.src);       // graph 결과
             });
         }
+
         takeScreenshot(opts);
-
-        waitForCondition(() => document.getElementById("image").src !== '').then(() => {
-            const result = document.getElementById("image").src;
-            console.log(result);
-        });
-
-
     }
 
 
