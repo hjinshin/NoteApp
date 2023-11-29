@@ -1,0 +1,24 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="./desmos.js"></script>
+
+
+
+</head>
+<body>
+<div id="calculator" style="width: 100%; max-width: 600px; height: 500px;"></div>
+
+<script>
+    var elt = document.getElementById('calculator');
+    var calculator = Desmos.GraphingCalculator(elt);
+    calculator.setExpression({id:1, latex:"3+3"})
+
+</script>
+
+
+</body>
+</html>
