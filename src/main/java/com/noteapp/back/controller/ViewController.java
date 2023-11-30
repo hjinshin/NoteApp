@@ -6,7 +6,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-public class webSocketController {
+public class ViewController {
     @Value("${server_url}")
     private String server_url;
 
