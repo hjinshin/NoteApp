@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 public class ViewController {
-    @Value("${server_url}")
+    @Value("${ws_server_url}")
     private String server_url;
 
     @RequestMapping(value = "/desmos")
