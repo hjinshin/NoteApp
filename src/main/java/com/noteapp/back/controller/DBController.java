@@ -40,7 +40,7 @@ public class DBController {
     public ResponseEntity<ResponseDto> updateDataBase(@RequestBody UpdateDto updateDto) {
         try {
             if(!userService.existUserId(updateDto.getUserId()))
-                return ResponseEntity.badRequest().body(new ResponseDto(false, new HashMap<String, Object>() {{
+                return ResponseEntity.ok().body(new ResponseDto(false, new HashMap<String, Object>() {{
                     put("message", "UserId does not exist");
                 }}));
             userService.update(updateDto.getUserId(), updateDto.getData());
@@ -59,7 +59,7 @@ public class DBController {
     public ResponseEntity<ResponseDto> readDataBase(@RequestParam String userId) {
         try {
             if(!userService.existUserId(userId))
-                return ResponseEntity.badRequest().body(new ResponseDto(false, new HashMap<String, Object>() {{
+                return ResponseEntity.ok().body(new ResponseDto(false, new HashMap<String, Object>() {{
                     put("message", "UserId does not exist");
                 }}));
             return ResponseEntity.ok().body(new ResponseDto(true, userService.readUserData(userId)));
@@ -75,7 +75,7 @@ public class DBController {
     public ResponseEntity<ResponseDto> deleteUser(@RequestParam String userId) {
         try {
             if(!userService.existUserId(userId))
-                return ResponseEntity.badRequest().body(new ResponseDto(false, new HashMap<String, Object>() {{
+                return ResponseEntity.ok().body(new ResponseDto(false, new HashMap<String, Object>() {{
                     put("message", "UserId does not exist");
                 }}));
             userService.deleteUser(userId);
