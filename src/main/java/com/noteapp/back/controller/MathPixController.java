@@ -20,8 +20,7 @@ public class MathPixController {
 
     @PostMapping("/api/mathpix")
     public String recognizeMathExpression(@RequestBody ImgDto imgDto) throws URISyntaxException {
-        System.out.println(imgDto.getImg());
-
+        // access_token으로 회원가입여부 확인
         return mathPixService.recognizeMathExpression(imgDto.getImg());
     }
 

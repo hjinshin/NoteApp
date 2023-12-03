@@ -19,11 +19,13 @@ public class DBController {
     @PostMapping("/api/signup")
     public ResponseEntity<ResponseDto> signUp(@RequestBody SignUpDto signUpDto) {
         try{
-            if(userService.existUserId(signUpDto.getUserId()))
+            // asscee_token으로 로그인api에서 userId 가져오기 및 회원가입여부 확인
+            String userId = "TempUserId";
+            if(userService.existUserId(userId))
                 return ResponseEntity.ok().body(new ResponseDto(false, new HashMap<String, Object>() {{
                     put("message", "UserId already exists");
                 }}));
-            userService.signUp(signUpDto.getUserId());
+            userService.signUp(userId);
             return ResponseEntity.ok().body(new ResponseDto(true, new HashMap<String, Object>() {{
                 put("message", "SignUp success");
             }}));
@@ -39,11 +41,13 @@ public class DBController {
     @PostMapping("/api/database")
     public ResponseEntity<ResponseDto> updateDataBase(@RequestBody UpdateDto updateDto) {
         try {
-            if(!userService.existUserId(updateDto.getUserId()))
+            // asscee_token으로 로그인api에서 userId 가져오기 및 회원가입여부 확인
+            String userId = "TempUserId";
+            if(!userService.existUserId(userId))
                 return ResponseEntity.ok().body(new ResponseDto(false, new HashMap<String, Object>() {{
                     put("message", "UserId does not exist");
                 }}));
-            userService.update(updateDto.getUserId(), updateDto.getData());
+            userService.update(userId, updateDto.getData());
             return ResponseEntity.ok().body(new ResponseDto(true, new HashMap<String, Object>() {{
                 put("message", "update success");
             }}));
@@ -56,8 +60,10 @@ public class DBController {
     }
 
     @GetMapping("/api/database")
-    public ResponseEntity<ResponseDto> readDataBase(@RequestParam String userId) {
+    public ResponseEntity<ResponseDto> readDataBase(@RequestParam String access_token) {
         try {
+            // asscee_token으로 로그인api에서 userId 가져오기 및 회원가입여부 확인
+            String userId = "TempUserId";
             if(!userService.existUserId(userId))
                 return ResponseEntity.ok().body(new ResponseDto(false, new HashMap<String, Object>() {{
                     put("message", "UserId does not exist");
@@ -72,8 +78,10 @@ public class DBController {
     }
 
     @DeleteMapping("/api/database")
-    public ResponseEntity<ResponseDto> deleteUser(@RequestParam String userId) {
+    public ResponseEntity<ResponseDto> deleteUser(@RequestParam String access_token) {
         try {
+            // asscee_token으로 로그인api에서 userId 가져오기 및 회원가입여부 확인
+            String userId = "TempUserId";
             if(!userService.existUserId(userId))
                 return ResponseEntity.ok().body(new ResponseDto(false, new HashMap<String, Object>() {{
                     put("message", "UserId does not exist");

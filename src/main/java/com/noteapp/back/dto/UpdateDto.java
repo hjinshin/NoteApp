@@ -10,6 +10,6 @@ import java.util.Map;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UpdateDto {
-    private String userId;
+    private String access_token;
     private Map<String, Object> data;
 }
