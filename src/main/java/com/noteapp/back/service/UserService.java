@@ -16,15 +16,15 @@ public class UserService {
     private UserRepository userRepository;
 
     @Transactional
-    public void signUp(String userId) {
-        User user = new User(userId, new HashMap<>(), LocalDateTime.now());
+    public void signUp(String userId, String userEmail) {
+        User user = new User(userId, userEmail, new HashMap<>(), LocalDateTime.now());
         userRepository.save(user);
     }
 
     @Transactional
-    public void update(String userId, Map<String ,Object> info) {
+    public void update(String userId, Map<String ,Object> data) {
         User user = userRepository.findByUserId(userId);
-        User new_user = new User(user.getId(), userId, info, LocalDateTime.now());
+        User new_user = new User(user.getId(), userId, user.getEmail(), data, LocalDateTime.now());
         userRepository.save(new_user);
     }
 
