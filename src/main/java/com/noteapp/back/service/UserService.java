@@ -16,8 +16,8 @@ public class UserService {
     private UserRepository userRepository;
 
     @Transactional
-    public void signUp(String userId, String userEmail) {
-        User user = new User(userId, userEmail, new HashMap<>(), LocalDateTime.now());
+    public void signUp(String userId, String userEmail, Map<String,Object> data) {
+        User user = new User(userId, userEmail, data, LocalDateTime.now());
         userRepository.save(user);
     }
 
