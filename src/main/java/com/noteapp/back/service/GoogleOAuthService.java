@@ -115,8 +115,6 @@ public class GoogleOAuthService {
         ObjectMapper objectMapper = new ObjectMapper();
         return objectMapper.readValue(response.getBody(), GoogleOAuthTokenDto.class);
     }
-
-
     public ResponseEntity<Map<String, Object>> requestGoogleUserInfo(String access_token) {
         HttpHeaders headers = new HttpHeaders();
         headers.add("Authorization", "Bearer " + access_token);
@@ -137,4 +135,3 @@ public class GoogleOAuthService {
         return new GoogleUserInfo(userInfoMap.get("sub").toString(), userInfoMap.get("email").toString());
     }
 }
-

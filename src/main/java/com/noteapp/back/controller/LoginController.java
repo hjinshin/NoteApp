@@ -14,8 +14,12 @@ import java.util.HashMap;
 
 @RestController
 public class LoginController {
+    private final GoogleOAuthService googleOAuthService;
+
     @Autowired
-    GoogleOAuthService googleOAuthService;
+    public LoginController(GoogleOAuthService googleOAuthService) {
+        this.googleOAuthService = googleOAuthService;
+    }
 
     @GetMapping("/login")
     public ResponseEntity<ResponseDto> googleLogin(@RequestParam("code") String code) throws IOException {
