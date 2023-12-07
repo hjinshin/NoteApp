@@ -43,7 +43,7 @@ public class MathPixController {
 
         } catch (HttpStatusCodeException | IOException e) {
             System.out.println(e.getMessage());
-            return ResponseEntity.badRequest().body(new ResponseDto(false, null, new HashMap<String, Object>() {{
+            return ResponseEntity.ok().body(new ResponseDto(false, null, new HashMap<String, Object>() {{
                 put("message", "MathPix Error: invalid access");
             }}));
         }

@@ -25,34 +25,41 @@ public class GoogleOAuthService {
     private String google_clientId;
     @Value("${google_secret}")
     private String google_secret;
-    @Autowired
-    UserService userService;
-    @Autowired
-    TokenService tokenService;
+    private final UserService userService;
+    private final TokenService tokenService;
 
     private final String GOOGLE_TOKEN_REQUEST_URL = "https://oauth2.googleapis.com/token";
     private final String GOOGLE_USERINFO_REQUEST_URL = "https://www.googleapis.com/oauth2/v3/userinfo";
+    @Autowired
+    public GoogleOAuthService(UserService userService, TokenService tokenService) {
+        this.userService = userService;
+        this.tokenService = tokenService;
+    }
 
     public ResponseEntity<ResponseDto> googleLogin(String code) throws IOException {
+        // access_token 인증
         ResponseEntity<String> accessTokenResponse = requestAccessToken(code);
         if(accessTokenResponse.getStatusCode() != HttpStatus.OK) {
-            return ResponseEntity.badRequest().body(new ResponseDto(false, null, new HashMap<String, Object>() {{
+            return ResponseEntity.ok().body(new ResponseDto(false, null, new HashMap<String, Object>() {{
                 put("message", "Login failed: invalid code");
             }}));
         }
         GoogleOAuthTokenDto oAuthTokenDto = getAccessToken(accessTokenResponse);
-
+        // acccess_token으로 userInfo 가져오기
         GoogleUserInfo googleUserInfo = getGoogleUserInfo(oAuthTokenDto.getAccess_token());
-        signUpUserAndToken(oAuthTokenDto, googleUserInfo);
+        // User 및 Token document 생성
         String userId = googleUserInfo.getId();
-        if(!userService.existUserId(googleUserInfo.getId())) {
+        if(!userService.existUserId(userId))
             userService.signUp(userId, googleUserInfo.getEmail());
+        if(oAuthTokenDto.getRefresh_token()!=null) {
+            GoogleToken refreshTokenDto = new GoogleToken(googleUserInfo.getId(), oAuthTokenDto.getRefresh_token(), oAuthTokenDto.getAccess_token());
+            tokenService.signUp(refreshTokenDto.getId(), refreshTokenDto.getRefresh_token(), refreshTokenDto.getAccess_token());
         }
 
         return ResponseEntity.ok().body(new ResponseDto(true,
                 tokenRefreshing(userId),
                 new HashMap<String, Object>() {{
-            put("data", userService.readUserData(userId));
+                    put("nameList", userService.getAllPageNamesByUserId(userId));
         }}));
     }
 
@@ -62,15 +69,6 @@ public class GoogleOAuthService {
         GoogleOAuthTokenDto oAuthTokenDto = getAccessToken(accessTokenResponse);
         tokenService.update(userId, oAuthTokenDto.getAccess_token());
         return oAuthTokenDto.getAccess_token();
-    }
-
-    public void signUpUserAndToken(GoogleOAuthTokenDto oAuthTokenDto, GoogleUserInfo userInfo) {
-        if(oAuthTokenDto.getRefresh_token()!=null) {
-            if(!userService.existUserId(userInfo.getId()))
-                userService.signUp(userInfo.getId(), userInfo.getEmail());
-            GoogleToken refreshTokenDto = new GoogleToken(userInfo.getId(), oAuthTokenDto.getRefresh_token(), oAuthTokenDto.getAccess_token());
-            tokenService.signUp(refreshTokenDto.getId(), refreshTokenDto.getRefresh_token(), refreshTokenDto.getAccess_token());
-        }
     }
 
     public ResponseEntity<String> requestAccessToken(String code) {

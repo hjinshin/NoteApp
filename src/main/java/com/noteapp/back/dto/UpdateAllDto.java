@@ -4,12 +4,18 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
 import java.util.Map;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class UpdateDto {
+public class UpdateAllDto {
     private String access_token;
-    private Map<String, Object> data;
+    private List<NewPage> new_pages;
+    @Data
+    public static class NewPage {
+        private String name;
+        private Map<String, Object> data;
+    }
 }

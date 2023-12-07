@@ -8,8 +8,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class TokenService {
+    private final TokenRepository tokenRepository;
     @Autowired
-    private TokenRepository tokenRepository;
+    public TokenService(TokenRepository tokenRepository) {
+        this.tokenRepository = tokenRepository;
+    }
 
     @Transactional
     public void signUp(String userId, String refresh_token, String access_token) {
