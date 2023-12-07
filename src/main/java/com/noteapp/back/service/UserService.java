@@ -24,7 +24,7 @@ public class UserService {
     @Transactional
     public void update(String userId, Map<String ,Object> data) {
         User user = userRepository.findByUserId(userId);
-        User new_user = new User(user.getId(), userId, user.getEmail(), data, LocalDateTime.now());
+        User new_user = new User(userId, user.getEmail(), data, LocalDateTime.now());
         userRepository.save(new_user);
     }
 

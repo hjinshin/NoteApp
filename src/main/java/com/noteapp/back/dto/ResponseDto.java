@@ -9,5 +9,6 @@ import java.util.Map;
 @AllArgsConstructor
 public class ResponseDto {
     private boolean success;
+    private String access_token;
     private Map<String, Object> response;
 }

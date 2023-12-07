@@ -19,8 +19,8 @@ public class MathPixService {
     private String app_id;
     @Value("${ocr_api_key}")
     private String app_key;
-    @Value("${mathpix_api_url}")
-    private String api_url;
+
+    private final String MATHPIX_API_URL = "https://api.mathpix.com/v3/text";
 
     public String recognizeMathExpression(String imgByte) throws URISyntaxException {
         RestTemplate restTemplate = new RestTemplate();
@@ -34,7 +34,7 @@ public class MathPixService {
         requestBody.put("src", "data:image/jpeg;base64," + imgByte);
 
         RequestEntity<Map<String, Object>> requestEntity = RequestEntity
-                .post(new URI(api_url))
+                .post(new URI(MATHPIX_API_URL))
                 .headers(headers)
                 .body(requestBody);
 

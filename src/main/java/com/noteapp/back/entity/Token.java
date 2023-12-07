@@ -4,19 +4,18 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
-
-import java.time.LocalDateTime;
-import java.util.Map;
 
 @Data
 @Document
 @AllArgsConstructor
 @NoArgsConstructor
-public class User {
+public class Token {
     @Id
     private String userId;
-    private String email;
-    private Map<String, Object> data;
-    private LocalDateTime last_modified_date;
+    @Indexed(unique = true)
+    private String refreshToken;
+    @Indexed(unique = true)
+    private String accessToken;
 }
