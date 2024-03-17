@@ -49,4 +49,9 @@ public class AuthController {
     public ResponseEntity<String> revokeAccessToken(@RequestParam String access_token) {
         return googleOAuthService.requestAccessToken(access_token);
     }
+
+    @GetMapping('/api/test')
+    public String test() {
+        return "success";
+    }
 }
