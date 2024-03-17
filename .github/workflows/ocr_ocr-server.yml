@@ -9,6 +9,12 @@ on:
       - OCR
   workflow_dispatch:
 
+env:
+  AUTH_URL: ${{ secrets.AUTH_URL }}
+  MATHPIX_APP_ID: ${{ secrets.MATHPIX_APP_ID }}
+  MATHPIX_APP_KEY: ${{ secrets.MATHPIX_APP_KEY }}
+
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -21,14 +27,17 @@ jobs:
         with:
           java-version: '8'
 
-      - name: Build with Maven
-        run: mvn clean install
+      - name: Make Gradlew executable
+        run: chmod +x gradlew
+
+      - name: Build with Gradle
+        run: ./gradlew clean build
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v3
         with:
           name: java-app
-          path: '${{ github.workspace }}/target/*.jar'
+          path: '${{ github.workspace }}/build/libs/*.jar'
 
   deploy:
     runs-on: ubuntu-latest
@@ -58,5 +67,5 @@ jobs:
         with:
           app-name: 'OCR-server'
           slot-name: 'Production'
-          package: '*.jar'
+          package: 'OCR-0.0.1-SNAPSHOT.jar'
           
