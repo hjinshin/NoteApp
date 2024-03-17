@@ -116,4 +116,8 @@ public class GETController {
             }}));
         }
     }
+    @GetMapping("/api/test")
+    public String test() {
+        return "success";
+    }
 }
