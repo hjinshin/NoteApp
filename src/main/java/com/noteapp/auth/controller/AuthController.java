@@ -50,7 +50,7 @@ public class AuthController {
         return googleOAuthService.requestAccessToken(access_token);
     }
 
-    @GetMapping('/api/test')
+    @GetMapping("/api/test")
     public String test() {
         return "success";
     }
