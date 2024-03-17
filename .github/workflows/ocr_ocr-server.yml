@@ -33,10 +33,6 @@ jobs:
       - name: Build with Gradle
         run: ./gradlew clean build
 
-      - name: List JAR files
-        run: |
-          ls -1 *.jar
-
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v3
         with:
@@ -64,6 +60,10 @@ jobs:
           client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_A5B85613908A49A3A8B68756A3F78349 }}
           tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_62342E02A17547E29D26090B93796D64 }}
           subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_0E3A87AB4A2F4D60AA30FA77721AC10E }}
+
+      - name: List JAR files
+        run: |
+          ls -1 *.jar
 
       - name: Deploy to Azure Web App
         id: deploy-to-webapp
