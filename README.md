@@ -72,8 +72,9 @@
 </br>
 
 ### Backend 아키텍처
-</br>
 * 마이크로서비스 아키텍처
+</br>
+
 <img src="readme_img/backendarchitect.png" />
 
 ## API
